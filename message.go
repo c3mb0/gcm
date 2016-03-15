@@ -5,7 +5,8 @@ package gcm
 // Overview for more information:
 // http://developer.android.com/google/gcm/gcm.html#send-msg
 type Message struct {
-	RegistrationIDs       []string               `json:"registration_ids"`
+	To                    string                 `json:"to,omitempty"`
+	RegistrationIDs       []string               `json:"registration_ids,omitempty"`
 	CollapseKey           string                 `json:"collapse_key,omitempty"`
 	Data                  map[string]interface{} `json:"data,omitempty"`
 	DelayWhileIdle        bool                   `json:"delay_while_idle,omitempty"`
@@ -18,4 +19,10 @@ type Message struct {
 // and registration IDs.
 func NewMessage(data map[string]interface{}, regIDs ...string) *Message {
 	return &Message{RegistrationIDs: regIDs, Data: data}
+}
+
+// NewSingleMessage returns a new Message with the specified payload
+// and recipient token.
+func NewSingleMessage(data map[string]interface{}, to string) *Message {
+	return &Message{To: to, Data: data}
 }
