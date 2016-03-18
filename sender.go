@@ -197,8 +197,6 @@ func checkSender(sender *Sender) error {
 func checkMessage(msg *Message) error {
 	if msg == nil {
 		return errors.New("the message must not be nil")
-	} else if msg.RegistrationIDs == nil {
-		return errors.New("the message's RegistrationIDs field must not be nil")
 	} else if len(msg.RegistrationIDs) == 0 {
 		return errors.New("the message must specify at least one registration ID")
 	} else if len(msg.RegistrationIDs) > 1000 {
