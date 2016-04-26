@@ -197,10 +197,16 @@ func checkSender(sender *Sender) error {
 func checkMessage(msg *Message) error {
 	if msg == nil {
 		return errors.New("the message must not be nil")
-	} else if len(msg.RegistrationIDs) == 0 {
-		return errors.New("the message must specify at least one registration ID")
-	} else if len(msg.RegistrationIDs) > 1000 {
-		return errors.New("the message may specify at most 1000 registration IDs")
+	} else if msg.RegistrationIDs != nil {
+		if msg.To != "" {
+			return errors.New("to should be empty when using registration IDs")
+		} else if len(msg.RegistrationIDs) == 0 {
+			return errors.New("the message must specify at least one registration ID")
+		} else if len(msg.RegistrationIDs) > 1000 {
+			return errors.New("the message may specify at most 1000 registration IDs")
+		}
+	} else if msg.To == "" {
+		return errors.New("to shouldn't be empty when using registration IDs")
 	} else if msg.TimeToLive < 0 || 2419200 < msg.TimeToLive {
 		return errors.New("the message's TimeToLive field must be an integer " +
 			"between 0 and 2419200 (4 weeks)")
